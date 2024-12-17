@@ -20,6 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     // TODO: 2. 인가에 대한 이해
     private static final String[] AUTH_REQUIRED_PATH_PATTERNS = {"/users/logout", "/admins/*", "/items/*"};
+    private static final String[] ADMIN_REQUIRED_PATH_PATTERNS = {"/admins/*"};
     private static final String[] USER_ROLE_REQUIRED_PATH_PATTERNS = {"/reservations/*"};
 
     private final AuthInterceptor authInterceptor;
@@ -28,7 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
-                .addPathPatterns(AUTH_REQUIRED_PATH_PATTERNS)
+                .addPathPatterns(ADMIN_REQUIRED_PATH_PATTERNS)
                 .order(Ordered.HIGHEST_PRECEDENCE);
 
         registry.addInterceptor(userRoleInterceptor)

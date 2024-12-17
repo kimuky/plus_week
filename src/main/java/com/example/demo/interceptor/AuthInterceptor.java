@@ -1,6 +1,7 @@
 package com.example.demo.interceptor;
 
 import com.example.demo.constants.GlobalConstants;
+import com.example.demo.entity.Role;
 import com.example.demo.exception.UnauthorizedException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,6 +23,10 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         if (session.getAttribute(GlobalConstants.USER_AUTH) == null) {
             throw new UnauthorizedException(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다.");
+        }
+
+        if (session.getAttribute(GlobalConstants.USER_AUTH) != Role.ADMIN) {
+            throw new UnauthorizedException(HttpStatus.UNAUTHORIZED, "관리자가 아님.");
         }
 
         return true;
