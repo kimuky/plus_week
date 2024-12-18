@@ -1,8 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.ReservationRequestDto;
+import com.example.demo.dto.ReservationResponseDto;
 import com.example.demo.service.ReservationService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/reservations")
@@ -32,8 +35,8 @@ public class ReservationController {
     }
 
     @GetMapping("/search")
-    public void searchAll(@RequestParam(required = false) Long userId,
-                          @RequestParam(required = false) Long itemId) {
-        reservationService.searchAndConvertReservations(userId, itemId);
+    public List<ReservationResponseDto> searchAll(@RequestParam(required = false) Long userId,
+                                                  @RequestParam(required = false) Long itemId) {
+        return reservationService.findByUserIdOrItemId(userId, itemId);
     }
 }
