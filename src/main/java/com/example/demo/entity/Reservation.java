@@ -5,6 +5,8 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+import static com.example.demo.entity.ReservationStep.*;
+
 @Entity
 @Getter
 public class Reservation {
@@ -24,19 +26,32 @@ public class Reservation {
 
     private LocalDateTime endAt;
 
-    private String status; // PENDING, APPROVED, CANCELED, EXPIRED
+    @Enumerated(EnumType.STRING)
+    private ReservationStep reservationStep; // PENDING, APPROVED, CANCELED, EXPIRED
 
-    public Reservation(Item item, User user, String status, LocalDateTime startAt, LocalDateTime endAt) {
+    public Reservation(Item item, User user, ReservationStep reservationStep, LocalDateTime startAt, LocalDateTime endAt) {
         this.item = item;
         this.user = user;
-        this.status = status;
+        this.reservationStep = reservationStep;
         this.startAt = startAt;
         this.endAt = endAt;
     }
 
     public Reservation() {}
 
-    public void updateStatus(String status) {
-        this.status = status;
+    public void updateStep(ReservationStep reservationStep) {
+        switch (reservationStep) {
+            case APPROVED, EXPIRED:
+                if (!this.getReservationStep().equals(PENDING)){
+                    throw new IllegalArgumentException("올바르지 않은 상태");
+                }
+                break;
+            case CANCELED:
+                if (this.getReservationStep().equals(EXPIRED)){
+                    throw new IllegalArgumentException("올바르지 않은 상태");
+                }
+                break;
+        }
+        this.reservationStep = reservationStep;
     }
 }

@@ -14,22 +14,6 @@ import java.util.Optional;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long>, ReservationQueryDslRepository {
 
-    List<Reservation> findByUserIdAndItemId(Long userId, Long itemId);
-
-    List<Reservation> findByUserId(Long userId);
-
-    List<Reservation> findByItemId(Long itemId);
-
-    @Query("SELECT r FROM Reservation r " +
-            "WHERE r.item.id = :id " +
-            "AND NOT (r.endAt <= :startAt OR r.startAt >= :endAt) " +
-            "AND r.status = 'APPROVED'")
-    List<Reservation> findConflictingReservations(
-            @Param("id") Long id,
-            @Param("startAt") LocalDateTime startAt,
-            @Param("endAt") LocalDateTime endAt
-    );
-
     @Query("SELECT new com.example.demo.dto.ReservationResponseDto(r.id, u.nickname, i.name, r.startAt, r.endAt) " +
             "from Reservation r " +
             "join  r.item i " +
