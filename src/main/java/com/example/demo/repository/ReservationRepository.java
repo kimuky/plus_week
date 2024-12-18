@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.dto.ReservationResponseDto;
 import com.example.demo.entity.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -28,4 +29,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             @Param("startAt") LocalDateTime startAt,
             @Param("endAt") LocalDateTime endAt
     );
+
+    @Query("SELECT new com.example.demo.dto.ReservationResponseDto(r.id, u.nickname, i.name, r.startAt, r.endAt) " +
+            "from Reservation r " +
+            "join  r.item i " +
+            "join  r.user u")
+    List<ReservationResponseDto> findAllCustom();
 }
