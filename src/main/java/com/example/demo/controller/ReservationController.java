@@ -4,6 +4,8 @@ import com.example.demo.dto.ReservationRequestDto;
 import com.example.demo.dto.ReservationResponseDto;
 import com.example.demo.dto.ReservationResponseStepDto;
 import com.example.demo.service.ReservationService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,8 +33,8 @@ public class ReservationController {
     }
 
     @GetMapping
-    public List<ReservationResponseDto> findAll() {
-        return reservationService.getReservations();
+    public ResponseEntity<List<ReservationResponseDto>> findAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(reservationService.getReservations());
     }
 
     @GetMapping("/search")
