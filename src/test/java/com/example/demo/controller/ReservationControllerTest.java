@@ -40,8 +40,7 @@ class ReservationControllerTest {
 
     @Test
     void createReservation() throws Exception {
-        String jsonRequest = "{\"itemId\":\"1\", \"userId\":\"1\", \"startAt\":\"2024-02-12T12:00:00\", \"endAt\":\"2024-02-12T13:00:00\" }";
-        ReservationRequestDto reservationRequestDto = new ReservationRequestDto();
+        ReservationRequestDto reservationRequestDto = new ReservationRequestDto(1L, 1L, "2024-02-12T12:00:00", "2024-02-12T12:00:00");
         mockMvc.perform(
                         post("/reservations")
                                 .session(session)
